@@ -73,7 +73,6 @@ class PaymentsController {
             // Handle the event
             switch (event.type) {
                 case 'checkout.session.completed':
-                    console.log("case checkout")
                     let transaction = {};
                     const email = event.data.object.custom_fields[0].text.value
                     const findUserResponse = await this.userService.find({ email });
@@ -84,7 +83,7 @@ class PaymentsController {
                     } else {
                         transaction['user_id'] = "undefined"
                     }
-                    
+
                     await this.transactionService.create(transaction)
 
                     //Deactivate link to enforce just one-time use

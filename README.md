@@ -1,23 +1,37 @@
 # vzy-backend-test
 
-To Run Locally, 
+## Overview
+This project is a backend application built with Node.js and Express.js. It provides endpoints for user authentication, user management, generating payment links, and managing subscriptions.
 
-clone project - git clone https://github.com/Gbolahan10/vzy_test.git
+## Getting Started
+To run the project locally, follow these steps:
 
+- ### Clone the Project
+```bash
+git clone https://github.com/Gbolahan10/vzy_test.git
+```
+- ### Setting up the project locally
+1. install all dependencies (run in terminal) - 
+```bash
+npm install
+```
 
-setting up the project locally
+2. build the project (run in terminal) 
+```bash
+npm run build
+```
 
-install all dependencies (run in terminal) - npm install
+3. start development server (run in terminal)
+```bash
+npm run dev
+```
 
-build the project (run in terminal) - npm run build
+## Documentation - Localhost Sample
 
-start development server (run in terminal) - npm run dev.
+### SignUp - http://localhost:8000/auth/signup
 
-Documentation - localhost sample
-
-SignUp - http://localhost:8000/auth/signup
-
-request body:
+- request body:
+```json
 {
     "email": "************@gmail.com",
     "firstName": "test",
@@ -26,8 +40,10 @@ request body:
     "countryCode": "234",
     "phoneNumber": "08100000000"
 }
+```
 
-sample response:
+- sample response:
+```json
 {
     "data": {
         "user": {
@@ -46,17 +62,20 @@ sample response:
     },
     "message": "Account created successfully."
 }
+```
 
-SignIn - http://localhost:8000/auth/signin
+### SignIn - http://localhost:8000/auth/signin
 
-request body:
+- request body:
+```json
 {
     "email": "***********@gmail.com",
     "password": "password"
 }
+```
 
-sample response:
-
+- sample response:
+```json
 {
     "data": {
         "user": {
@@ -82,56 +101,78 @@ sample response:
     },
     "message": "Login successful"
 }
+```
 
-Update User details - http://localhost:8000/user/update
+### Update User details - http://localhost:8000/user/update
 
 login token required - (Bearer Token)
 note- all fields are optional. Other fields that can be updated are lastName, countryCode and phoneNumber
 
-request body: 
+- request body: 
+```json
 {
     "address": "test, test",
     "firstName": "testuser"
 }
+```
 
-sample response:
-
+- sample response:
+```json
 {
     "message": "User details updated"
 }
+```
 
-Generate Payment Link - http://localhost:8000/payment/link/generate
+### Generate Payment Link - http://localhost:8000/payment/link/generate
 
 login token trequired
 
-request body: no request body
+- request body: no request body
 
-sample response:
-
+- sample response:
+```json
 {
     "data": {
         "paymentLink": "https://buy.stripe.com/**************"
     },
     "message": "Paymrnt link generated successfully"
 }
+```
 
-click on the link to make test payment.
+Note: click on the link to make test payment.
 test card details:
 
-16 digits - 
-expiry date - 
-cic - 
+16 digits - 4242 4242 4242 4242
+expiry date - 02/24
+cic - 123
 
-End Subscription Manually - http://localhost:8000/user/subscription/end
+### End Subscription Manually - http://localhost:8000/user/subscription/end
 
 This is to be able to quickly test that a user status is updated to PAID upon confirmation of their payment. This is just a test project and can't cover scenario like time lapse. Use this endpoint to elapse current subscription so as to be able to perform some dependent activities.
 
 login token required
 
-request body - no request body
+- request body - no request body
 
-sample response:
-
+- sample response:
+```json
 {
     "message": "Subscription ended successfully"
 }
+```
+
+### .env.development format - development server
+
+PORT = 8000
+DATABASE_URL = mongodb://localhost:27017/vzytest
+
+ORIGIN = *
+CREDENTIALS = true
+
+SECRET_KEY = VZYBackendSpecialSecret100223645856%$&$*#()@
+
+LOG_FORMAT = dev
+LOG_DIR = ../../logs
+
+ENDPOINT_SECRET = generate from stripe
+WEBHOOK_API_KEY = generate from stripe
