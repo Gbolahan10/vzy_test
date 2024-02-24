@@ -40,7 +40,7 @@ describe('AuthenticationController', () => {
         token: 'generatedToken',
     });
   
-    await authController.signInByEmail(req, res, next);
+    await authController.signIn(req, res, next);
   
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
@@ -66,7 +66,7 @@ describe('AuthenticationController', () => {
   it('should handle the case where the user does not exist', async () => {
     findMock.mockResolvedValue({ status: false, result: null });
 
-    await authController.signInByEmail(req, res, next);
+    await authController.signIn(req, res, next);
 
     expect(res.status).not.toHaveBeenCalled();
     expect(res.json).not.toHaveBeenCalled();
@@ -85,7 +85,7 @@ it('should handle the case where the password is incorrect', async () => {
 
   authController.authService.verifyPassword = jest.fn().mockResolvedValue(false);
 
-  await authController.signInByEmail(req, res, next);
+  await authController.signIn(req, res, next);
 
   expect(res.status).not.toHaveBeenCalledWith();
   expect(res.json).not.toHaveBeenCalledWith();
@@ -102,7 +102,7 @@ it('should handle the case where the password is incorrect', async () => {
     authController.authService.generatePassword = jest.fn().mockResolvedValue({ passwordHash: 'hashedPassword' });
     
     createMock.mockResolvedValueOnce({ status: true, result: { _id: 'user_id', firstName: 'firstname' } });
-    await authController.signUpByEmail(req, res, next);
+    await authController.signIn(req, res, next);
 
     expect(createMock).toHaveBeenCalledWith({ firstName: "firstname", lastName: "lastname", email: "test@gmail.com", password: 'hashedPassword', countryCode: "234", phoneNumber: "8023456789" });
     expect(res.status).toHaveBeenCalledWith(201);
@@ -113,7 +113,7 @@ it('should handle the case where the password is incorrect', async () => {
   it('should handle the case where the user already exists', async () => {
     findMock.mockResolvedValue({ status: true, result: { _id: 'existingUserId' } });
 
-    await authController.signUpByEmail(req, res, next);
+    await authController.signIn(req, res, next);
 
     expect(createMock).not.toHaveBeenCalled()
     expect(res.status).not.toHaveBeenCalled();
@@ -127,7 +127,7 @@ it('should handle errors during user creation', async () => {
 
   createMock.mockResolvedValue({ status: false, error: 'User creation error' });
 
-  await authController.signUpByEmail(req, res, next);
+  await authController.signIn(req, res, next);
 
   expect(createMock).toHaveBeenCalledWith({ firstName: "firstname", lastName: "lastname", email: "test@gmail.com", password: 'hashedPassword', countryCode: "234", phoneNumber: "8023456789" });
   expect(next).toHaveBeenCalledWith(new HttpException(409, 'User creation error'));

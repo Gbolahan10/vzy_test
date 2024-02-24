@@ -80,8 +80,6 @@ class App {
     return this.app;
   }
 
-  private 
-
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
